@@ -3,11 +3,12 @@ module Enumerable
     if block_given?
       index = 0 ;
       while index < length
-        yield(self[i])
+        yield(self[index])
         index += 1
       end
   end
 end
+
 
 
 def my_each_with_index
@@ -20,19 +21,15 @@ def my_each_with_index
   end
 end
 
-
-
-
-=begin 
-def my_each
-    if block_given?
-      i = 0
-      while i < length
-        yield(self[i])
-        i += 1
-      end
-    else
-      to_enum(:my_each)
-    end
+def my_select 
+  array = []
+  if block_given?
+    #aplica my_each para cada elemento, se yield(x) retornar verdadeiro, array.push()
+      self.my_each {|x| array.push(x) if yield(x) }
+    array
   end
-=end
+end
+
+def my_all?
+
+end
