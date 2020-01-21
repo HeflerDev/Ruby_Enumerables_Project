@@ -52,13 +52,22 @@ def my_all?(exp = nil)
   true
 end
 
-def my_any?
+def my_any?(exp = nil)
   if block_given?
     self.my_each{|x| return true if yield(x)}
     false
+  elsif exp
+    if exp.is_a? Regexp
+      self.my_each { |x| return true if x =~ exp}
+    elsif exp.is_a? Class
+      self.my_each { |x| return true if x.is_a? exp}
+    else
+      self.my_each { |x| return true if x == exp}
+    end
   else
-    to_enum(:my_any?)
+    self.my_each { |x| return true if x }
   end
+  false
 end
 
 def my_none?
