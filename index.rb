@@ -70,13 +70,22 @@ def my_any?(exp = nil)
   false
 end
 
-def my_none?
+def my_none?(exp = nil)
   if block_given?
     self.my_each{|x| return false if yield(x)}
     true
+  elsif exp
+    if exp.is_a? Regexp
+      self.my_each { |x| return false if x =~ exp }
+    elsif exp.is_a? Class
+      self.my_each { |x| return false if x.is_a? exp }
+    else
+      self.my_each { |x| return false if x == exp }
+    end
   else
-    to_enum(:my_none?)
+    self.my_each { |x| return false if exp}
   end
+  true
 end
 
 def my_count 
