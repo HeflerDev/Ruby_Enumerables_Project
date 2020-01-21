@@ -1,4 +1,5 @@
 module Enumerable
+
 def my_each
   if block_given?
     index = 0 
