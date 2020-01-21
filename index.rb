@@ -89,16 +89,16 @@ def my_none?(exp = nil)
 end
 
 def my_count 
+  counter = 0
   if block_given?
-    counter = 0
     self.my_each{|x| counter += 1 if yield(x)}
     counter
   else
-    to_enum(:my_count)
+    self.my_each{ |x| counter += 1}
   end
 end
 
-def my_map
+def my_map(proc = nil)
   if block_given?
     array = []
     self.my_each{|x| array.push(yield(x))}
@@ -113,26 +113,49 @@ def my_map
 end
 
 
-def my_inject
+def my_inject(i = nil, symb = nil)
   if block_given?
     prod ||= 0
     self.my_each{|x| prod = yield(prod, x)}
     prod
+  elsif (i.is_a? Symbol) || (symb.is_a? Symbol)
+    if cont.is_a? Symbol
+      case cont
+      when :+
+        counter = 0
+        my_each { |x| counter += x }
+      when :-
+        counter = self[0]
+        self[1..-1].my_each { |x| counter -= x }
+      when :*
+        counter = self[0]
+        self[1..-1].my_each { |x| counter *= x }
+      when :/
+        counter = self[0]
+        self[1..-1].my_each { |x| counter /= x }
+      end
+      counter
+    elsif i.is_a? Numeric
+      case symb
+      when :+
+        my_each { |x| i += x }
+      when :-
+        my_each { |x| i -= x }
+      when :*
+        my_each { |x| i *= x }
+      when :/
+        my_each { |x| i /= x }
+      end
+      i
+    else
+      "undefined method for #{cont}:#{cont.class}"
+    end
   else
-    to_enum(:my_map)
+    'no block given (LocalJumpError)'
   end
 end
 
 def multiply_els(arr)
-  arr.my_inject{|product,result| product * result}
+  arr.my_inject(1){|product,result| product * result}
 end
-
-
-=begin 
-def multiply_els(a)
-  arr.my_inject{|x,y| x * y}
-end
-
-puts multiply_els([1,2,3])
-=end
 end
