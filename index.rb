@@ -7,7 +7,7 @@ module Enumerable
         yield(self[index])
         index += 1
       end
-      return self
+      self
     else
       to_enum(:my_each)
     end
@@ -34,10 +34,8 @@ module Enumerable
       to_enum(:my_select)
     end
   end
-
-  
-
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+
   def my_all?(exp = nil)
     if block_given?
       my_each { |x| return false unless yield(x) }
