@@ -7,6 +7,7 @@ module Enumerable
         yield(self[index])
         index += 1
       end
+      return self
     else
       to_enum(:my_each)
     end
@@ -33,6 +34,8 @@ module Enumerable
       to_enum(:my_select)
     end
   end
+
+  
 
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
   def my_all?(exp = nil)
@@ -84,7 +87,7 @@ module Enumerable
         my_each { |x| return false if x == exp }
       end
     else
-      my_each { return false if exp }
+      my_each { |x| return false if x }
     end
     true
   end
@@ -116,12 +119,12 @@ module Enumerable
   # rubocop:disable Metrics/MethodLength
   def my_inject(ind = nil, symb = nil)
     if block_given?
-      prod ||= 0
-      my_each { |x| prod = yield(prod, x) }
-      prod
+      ind ||= 0
+      my_each { |x| ind = yield(ind, x) }
+      ind
     elsif (ind.is_a? Symbol) || (symb.is_a? Symbol)
-      if cont.is_a? Symbol
-        case cont
+      if ind.is_a? Symbol
+        case ind
         when :+
           counter = 0
           my_each { |x| counter += x }
@@ -149,17 +152,22 @@ module Enumerable
         end
         ind
       else
-        "undefined method for #{cont}:#{cont.class}"
+        "undefined method for #{ind}:#{ind.class}"
       end
     else
       'no block given (LocalJumpError)'
     end
   end
+
+  
+
 end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
+
+puts (5..10).my_inject { |sum, n| sum + n} 
 
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ModuleLength
