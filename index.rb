@@ -158,16 +158,11 @@ module Enumerable
       'no block given (LocalJumpError)'
     end
   end
-
-  
-
 end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
-
-puts (5..10).my_inject { |sum, n| sum + n} 
 
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ModuleLength
