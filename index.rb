@@ -7,7 +7,7 @@ module Enumerable
         yield(self[index])
         index += 1
       end
-      return self
+      self
     else
       to_enum(:my_each)
     end
@@ -34,10 +34,8 @@ module Enumerable
       to_enum(:my_select)
     end
   end
-
-  
-
   # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+
   def my_all?(exp = nil)
     if block_given?
       my_each { |x| return false unless yield(x) }
@@ -158,16 +156,11 @@ module Enumerable
       'no block given (LocalJumpError)'
     end
   end
-
-  
-
 end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
-
-puts (5..10).my_inject { |sum, n| sum + n} 
 
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ModuleLength
