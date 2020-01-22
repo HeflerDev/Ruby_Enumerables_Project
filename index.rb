@@ -114,12 +114,12 @@ module Enumerable
   end
 
   # rubocop:disable Metrics/MethodLength
-  def my_inject(i = nil, symb = nil)
+  def my_inject(ind = nil, symb = nil)
     if block_given?
       prod ||= 0
       my_each { |x| prod = yield(prod, x) }
       prod
-    elsif (i.is_a? Symbol) || (symb.is_a? Symbol)
+    elsif (ind.is_a? Symbol) || (symb.is_a? Symbol)
       if cont.is_a? Symbol
         case cont
         when :+
@@ -136,18 +136,18 @@ module Enumerable
           self[1..-1].my_each { |x| counter /= x }
         end
         counter
-      elsif i.is_a? Numeric
+      elsif ind.is_a? Numeric
         case symb
         when :+
-          my_each { |x| i += x }
+          my_each { |x| ind += x }
         when :-
-          my_each { |x| i -= x }
+          my_each { |x| ind -= x }
         when :*
-          my_each { |x| i *= x }
+          my_each { |x| ind *= x }
         when :/
-          my_each { |x| i /= x }
+          my_each { |x| ind /= x }
         end
-        i
+        ind
       else
         "undefined method for #{cont}:#{cont.class}"
       end
