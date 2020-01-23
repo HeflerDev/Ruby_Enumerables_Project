@@ -90,14 +90,16 @@ module Enumerable
     true
   end
 
-  def my_count
+  def my_count(num)
     counter = 0
     if block_given?
       my_each { |x| counter += 1 if yield(x) }
-      counter
     else
-      my_each { counter += 1 }
+      my_each do |x|
+        counter += 1 if num == x
+      end
     end
+    counter
   end
 
   def my_map(proc = nil)
