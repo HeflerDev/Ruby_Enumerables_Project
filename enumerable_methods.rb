@@ -117,10 +117,10 @@ module Enumerable
   end
 
   # rubocop:disable Metrics/MethodLength
-  def my_inject(ind = nil, symb = nil)
+  def my_inject(ind = to_a[0], symb = nil)
     if block_given?
       ind ||= 0
-      my_each { |x| ind = yield(ind, x) }
+      to_a.my_each { |x| ind = yield(ind, x) }
       ind
     elsif (ind.is_a? Symbol) || (symb.is_a? Symbol)
       if ind.is_a? Symbol
@@ -163,6 +163,12 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
+
+longest = [ 'cat', 'sheep', 'bear' ].my_inject do |memo, word|
+  memo.length > word.length ? memo : word
+end
+
+puts longest
 
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ModuleLength
