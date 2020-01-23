@@ -164,10 +164,6 @@ def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
 
-longest = [ 'cat', 'sheep', 'bear' ].my_inject do |memo, word|
-  memo.length > word.length ? memo : word
-end
-
 puts longest
 
 # rubocop:enable Metrics/MethodLength
