@@ -121,7 +121,6 @@ module Enumerable
   # rubocop:disable Metrics/MethodLength
   def my_inject(ind = self[0], symb = nil)
     if block_given?
-      puts "it's me mario!"
       ind ||= 0
       index = 1
       while index < length
@@ -133,8 +132,8 @@ module Enumerable
       if ind.is_a? Symbol
         case ind
         when :+
-          counter = self[0]
-          self[1..-1].my_each { |x| counter += x }
+          counter = 0
+          my_each { |x| counter += x }
         when :-
           counter = self[0]
           self[1..-1].my_each { |x| counter -= x }
@@ -149,13 +148,13 @@ module Enumerable
       elsif ind.is_a? Numeric
         case symb
         when :+
-          my_each { |x| ind += x }
+          to_a.my_each { |x| ind += x }
         when :-
-          my_each { |x| ind -= x }
+          to_a.my_each { |x| ind -= x }
         when :*
-          my_each { |x| ind *= x }
+          to_a.my_each { |x| ind *= x }
         when :/
-          my_each { |x| ind /= x }
+          to_a.my_each { |x| ind /= x }
         end
         ind
       else
