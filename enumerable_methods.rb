@@ -96,11 +96,13 @@ module Enumerable
       my_each { |x| counter += 1 if yield(x) }
     else
       my_each do |x|
-        counter += 1 if num == x
+        counter += 1
       end
     end
     counter
   end
+
+  puts [1,2,3,4,5].my_count == [1,2,3,4,5].my_count
 
   def my_map(proc = nil)
     if block_given?
