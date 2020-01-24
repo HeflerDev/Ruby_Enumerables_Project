@@ -90,14 +90,18 @@ module Enumerable
     true
   end
 
-  def my_count
+  def my_count(num = nil)
     counter = 0
     if block_given?
       my_each { |x| counter += 1 if yield(x) }
-      counter
+    elsif num.nil?
+      my_each do |_|
+        counter += 1
+      end
     else
-      my_each { counter += 1 }
+      my_each { |x| counter += 1 if num == x }
     end
+    counter
   end
 
   def my_map(proc = nil)
@@ -115,10 +119,14 @@ module Enumerable
   end
 
   # rubocop:disable Metrics/MethodLength
-  def my_inject(ind = nil, symb = nil)
+  def my_inject(ind = self[0], symb = nil)
     if block_given?
       ind ||= 0
-      my_each { |x| ind = yield(ind, x) }
+      index = 1
+      while index < length
+        ind = yield(ind, self[index])
+        index += 1
+      end
       ind
     elsif (ind.is_a? Symbol) || (symb.is_a? Symbol)
       if ind.is_a? Symbol
@@ -140,13 +148,13 @@ module Enumerable
       elsif ind.is_a? Numeric
         case symb
         when :+
-          my_each { |x| ind += x }
+          to_a.my_each { |x| ind += x }
         when :-
-          my_each { |x| ind -= x }
+          to_a.my_each { |x| ind -= x }
         when :*
-          my_each { |x| ind *= x }
+          to_a.my_each { |x| ind *= x }
         when :/
-          my_each { |x| ind /= x }
+          to_a.my_each { |x| ind /= x }
         end
         ind
       else
