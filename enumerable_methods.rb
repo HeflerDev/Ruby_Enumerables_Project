@@ -94,15 +94,15 @@ module Enumerable
     counter = 0
     if block_given?
       my_each { |x| counter += 1 if yield(x) }
-    else
-      my_each do |x|
+    elsif num.nil?
+      my_each do |_|
         counter += 1
       end
+    else
+      my_each { |x| counter += 1 if num == x }
     end
     counter
   end
-
-  puts [1,2,3,4,5].my_count == [1,2,3,4,5].my_count
 
   def my_map(proc = nil)
     if block_given?
@@ -119,10 +119,15 @@ module Enumerable
   end
 
   # rubocop:disable Metrics/MethodLength
-  def my_inject(ind = to_a[0], symb = nil)
+  def my_inject(ind = self[0], symb = nil)
     if block_given?
+      puts "it's me mario!"
       ind ||= 0
-      to_a.my_each { |x| ind = yield(ind, x) }
+      index = 1
+      while index < length
+        ind = yield(ind, self[index])
+        index += 1
+      end
       ind
     elsif (ind.is_a? Symbol) || (symb.is_a? Symbol)
       if ind.is_a? Symbol
