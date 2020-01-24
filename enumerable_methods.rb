@@ -90,7 +90,7 @@ module Enumerable
     true
   end
 
-  def my_count(num)
+  def my_count(num = nil)
     counter = 0
     if block_given?
       my_each { |x| counter += 1 if yield(x) }
@@ -101,6 +101,8 @@ module Enumerable
     end
     counter
   end
+
+  puts [1,2,2,3,4,5].my_count(2)
 
   def my_map(proc = nil)
     if block_given?
@@ -163,8 +165,6 @@ end
 def multiply_els(arr)
   arr.my_inject(1) { |product, result| product * result }
 end
-
-puts longest
 
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ModuleLength
