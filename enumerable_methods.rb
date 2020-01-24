@@ -102,8 +102,6 @@ module Enumerable
     counter
   end
 
-  puts [1,2,2,3,4,5].my_count(2)
-
   def my_map(proc = nil)
     if block_given?
       array = []
@@ -128,8 +126,8 @@ module Enumerable
       if ind.is_a? Symbol
         case ind
         when :+
-          counter = 0
-          my_each { |x| counter += x }
+          counter = self[0]
+          self[1..-1].my_each { |x| counter += x }
         when :-
           counter = self[0]
           self[1..-1].my_each { |x| counter -= x }
